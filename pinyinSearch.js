@@ -4,7 +4,7 @@ export function pinyin() {
             this.initialize(ops);
         },
         options = {
-            checkPolyphone: false,
+            isPolyphony: false,//是否多音字，默认否
             charcase: 'default'
         };
 
@@ -420,7 +420,7 @@ export function pinyin() {
                 "fou": "\u7f36",
                 "bia": "\u9adf"
             };
-            this.polyphone = {
+            this.polyphonyWordDic = {
                 "19969": "DZ",
                 "19975": "WM",
                 "19988": "QJ",
@@ -802,9 +802,8 @@ export function pinyin() {
         // 提取拼音, 返回首字母大写形式
         getFullChars: function (str) {
             let result = '', name;
-            let reg = new RegExp('[a-zA-Z0-9\- ]');
-            for (let i = 0, len = str.length; i < len; i++) {
-                let ch = str.substr(i, 1), unicode = ch.charCodeAt(0);
+            str.map((value, index) => {
+                let ch = str.substr(index, 1), unicode = ch.charCodeAt(0);
                 if (unicode > 40869 || unicode < 19968) {
                     result += ch;
                 } else {
@@ -813,21 +812,22 @@ export function pinyin() {
                         result += name;
                     }
                 }
-            }
+            });
             return result;
         },
 
         // 提取首字母，返回大写形式
         getCamelChars: function (str) {
-            if (typeof(str) !== 'string')
+            if (typeof(str) !== 'string') {
                 throw new Error(-1, "函数getFisrt需要字符串类型参数!");
+            }
             let chars = []; //保存中间结果的数组
-            for (let i = 0, len = str.length; i < len; i++) {
+            str.map((value, index) => {
                 //获得unicode码
-                let ch = str.charAt(i);
+                let ch = str.charAt(index);
                 //检查该unicode码是否在处理范围之内,在则返回该码对映汉字的拼音首字母,不在则调用其它函数处理
                 chars.push(this._getChar(ch));
-            }
+            });
             //处理arrResult,返回所有可能的拼音首字母串数组
             return this._getResult(chars);
         },
@@ -856,39 +856,42 @@ export function pinyin() {
         _getChar: function (ch) {
             let unicode = ch.charCodeAt(0);
             //如果不在汉字处理范围之内,返回原字符,也可以调用自己的处理函数
-            if (unicode > 40869 || unicode < 19968)
+            if (unicode > 40869 || unicode < 19968) {
                 return ch; //dealWithOthers(ch);
+            }
             //检查是否是多音字,是按多音字处理,不是就直接在strChineseFirstPY字符串中找对应的首字母
-            if (!this.options.checkPolyphone)
+            if (!this.options.isPolyphony) {
                 return this.char_dict.charAt(unicode - 19968);
-            return this.polyphone[unicode] ? this.polyphone[unicode] : this.char_dict.charAt(unicode - 19968);
+            }
+            return this.polyphonyWordDic[unicode] ? this.polyphonyWordDic[unicode] : this.char_dict.charAt(unicode - 19968);
         },
 
         _getResult: function (chars) {
-            if (!this.options.checkPolyphone)
+            if (!this.options.isPolyphony) {
                 return chars.join('');
+            }
             let result = [''];
-            for (let i = 0, len = chars.length; i < len; i++) {
-                let str = chars[i], strlen = str.length;
+            chars.map((value) => {
+                let str = value, strlen = str.length;
                 if (strlen == 1) {
-                    for (let j = 0; j < result.length; j++) {
-                        result[k] += str;
-                    }
+                    result.map((data) => {
+                        data += str;
+                    })
                 } else {
                     let swap1 = result.slice(0);
                     result = [];
-                    for (let j = 0; j < strlen; j++) {
+                    str.map((strValue, index) => {
                         //复制一个相同的arrRslt
                         let swap2 = swap1.slice(0);
                         //把当前字符str[k]添加到每个元素末尾
-                        for (let k = 0; k < swap2.length; k++) {
-                            swap2[k] += str.charAt(j);
-                        }
+                        swap2.map((swap2Value) => {
+                            swap2Value += str.charAt(index);
+                        });
                         //把复制并修改后的数组连接到arrRslt上
                         result = result.concat(swap2);
-                    }
+                    })
                 }
-            }
+            });
             return result;
         }
 
