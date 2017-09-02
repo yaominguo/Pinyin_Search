@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Demo</title>
+    <style>
+        body{
+            background: skyblue;
+        }
+        .wrapper{
+            width: 10rem;
+            height: 10rem;
+            margin: 5rem auto;
+        }
+        .wrapper input{
+            width:10rem;
+            font-size: 1.5rem;
+        }
+        ul{
+            list-style: none;
+            padding: 0 0.2rem;
+            margin: 0;
+            background: #fff;
+            width:10rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input type="text" placeholder="请输入关键字">
+        <ul id="dataList"></ul>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="pinyinSearch.js"></script>
+<script>
+    const Data=["张三","李四","王五","王六"];
+    let textInput = document.querySelector('.wrapper input');
+    let dataList = document.getElementById('dataList');
+    textInput.addEventListener('change',function () {
+        let text=this.value,list;
+        Data.map((value,index)=>{
+            if(pinyin().getFullChars(value).indexOf(text.toLowerCase())!=-1||pinyin().getCamelChars(value).indexOf(text.toUpperCase())!=-1){
+                list=document.createElement('li');
+                list.innerText=value;
+                dataList.appendChild(list);
+                console.log(list);
+            }
+
+        });
+    })
+</script>

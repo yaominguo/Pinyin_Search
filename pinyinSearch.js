@@ -1,5 +1,5 @@
 //搜索框中的值匹配数据用，支持拼音、汉字的模糊搜索
-export function pinyin() {
+function pinyin() {
     let Pinyin = function (ops) {
             this.initialize(ops);
         },
@@ -799,35 +799,66 @@ export function pinyin() {
             };
         },
 
+        // // 提取拼音, 返回首字母大写形式
+        // getFullChars: function (str) {
+        //     let result = '', name;
+        //     str.map((value, index) => {
+        //         let ch = str.substr(index, 1), unicode = ch.charCodeAt(0);
+        //         if (unicode > 40869 || unicode < 19968) {
+        //             result += ch;
+        //         } else {
+        //             name = this._getFullChar(ch);
+        //             if (name !== false) {
+        //                 result += name;
+        //             }
+        //         }
+        //     });
+        //     return result;
+        // },
         // 提取拼音, 返回首字母大写形式
-        getFullChars: function (str) {
-            let result = '', name;
-            str.map((value, index) => {
-                let ch = str.substr(index, 1), unicode = ch.charCodeAt(0);
-                if (unicode > 40869 || unicode < 19968) {
+        getFullChars: function(str){
+            var result = '', name;
+            var reg = new RegExp('[a-zA-Z0-9\- ]');
+            for (var i=0, len = str.length; i < len; i++){
+                var ch = str.substr(i,1), unicode = ch.charCodeAt(0);
+                if(unicode > 40869 || unicode < 19968){
                     result += ch;
-                } else {
+                }else{
                     name = this._getFullChar(ch);
-                    if (name !== false) {
+                    if(name !== false){
                         result += name;
                     }
                 }
-            });
+            }
             return result;
         },
 
+        // // 提取首字母，返回大写形式
+        // getCamelChars: function (str) {
+        //     if (typeof(str) !== 'string') {
+        //         throw new Error(-1, "函数getFisrt需要字符串类型参数!");
+        //     }
+        //     let chars = []; //保存中间结果的数组
+        //     str.map((value, index) => {
+        //         //获得unicode码
+        //         let ch = str.charAt(index);
+        //         //检查该unicode码是否在处理范围之内,在则返回该码对映汉字的拼音首字母,不在则调用其它函数处理
+        //         chars.push(this._getChar(ch));
+        //     });
+        //     //处理arrResult,返回所有可能的拼音首字母串数组
+        //     return this._getResult(chars);
+        // },
         // 提取首字母，返回大写形式
-        getCamelChars: function (str) {
-            if (typeof(str) !== 'string') {
+        getCamelChars: function(str){
+            if(typeof(str) !== 'string')
                 throw new Error(-1, "函数getFisrt需要字符串类型参数!");
-            }
-            let chars = []; //保存中间结果的数组
-            str.map((value, index) => {
+            var chars = []; //保存中间结果的数组
+            for(var i=0,len=str.length; i < len; i++){
                 //获得unicode码
-                let ch = str.charAt(index);
+                var ch = str.charAt(i);
                 //检查该unicode码是否在处理范围之内,在则返回该码对映汉字的拼音首字母,不在则调用其它函数处理
                 chars.push(this._getChar(ch));
-            });
+            }
             //处理arrResult,返回所有可能的拼音首字母串数组
             return this._getResult(chars);
         },
