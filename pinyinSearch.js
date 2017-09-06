@@ -868,32 +868,31 @@ function pinyin() {
             return this.polyphonyWordDic[unicode] ? this.polyphonyWordDic[unicode] : this.char_dict.charAt(unicode - 19968);
         },
 
-        _getResult: function (chars) {
-            if (!this.options.isPolyphony) {
+        _getResult: function(chars){
+            if(!this.options.isPolyphony)
                 return chars.join('');
-            }
             let result = [''];
-            chars.map((value) => {
-                let str = value, strlen = str.length;
-                if (strlen == 1) {
-                    result.map((data) => {
-                        data += str;
-                    })
-                } else {
+            for(let i=0,len=chars.length;i<len;i++){
+                let str = chars[i], strlen = str.length;
+                if(strlen == 1){
+                    for(let j=0; j < result.length; j++){
+                        result[k] += str;
+                    }
+                }else{
                     let swap1 = result.slice(0);
                     result = [];
-                    str.map((strValue, index) => {
+                    for(let j=0; j < strlen; j++){
                         //复制一个相同的arrRslt
                         let swap2 = swap1.slice(0);
                         //把当前字符str[k]添加到每个元素末尾
-                        swap2.map((swap2Value) => {
-                            swap2Value += str.charAt(index);
-                        });
+                        for(let k=0; k < swap2.length; k++){
+                            swap2[k] += str.charAt(j);
+                        }
                         //把复制并修改后的数组连接到arrRslt上
                         result = result.concat(swap2);
-                    })
+                    }
                 }
-            });
+            }
             return result;
         }
 
