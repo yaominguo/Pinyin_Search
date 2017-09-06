@@ -10,27 +10,52 @@
             background: skyblue;
         }
         .wrapper{
-            width: 10rem;
+            width: 15rem;
             height: 10rem;
             margin: 5rem auto;
         }
-        .wrapper input{
+        .wrapper input[type='text']{
             width:10rem;
-            font-size: 1.5rem;
+            font-size: 0.5rem;
+            border:none;
+            outline: none;
+            height: 1rem;
+            line-height: 1rem;
+            padding: 0 0 0 0.5rem;
+        }
+        .wrapper input[type='text']:focus{
+            box-shadow: inset 0.1rem 0.1rem 0.3rem 0.1rem #888;
+        }
+        .wrapper input[type='button']{
+            color:#fff;
+            font-size: 0.5rem;
+            border: none;
+            outline: none;
+            background: #aaa;
+            height: 1rem;
+            line-height: 1rem;
+            padding: 0 0.5rem;
+            cursor: pointer;
+        }
+        .wrapper input[type='button']:hover{
+            box-shadow: 0.1rem 0.3rem 0.3rem 0.1rem #888;
         }
         ul{
             list-style: none;
-            padding: 0 0.2rem;
+            padding: 0 0 0 0.5rem;
             margin: 0;
             background: #fff;
-            width:10rem;
-            font-size: 1.5rem;
+            width: 10rem;
+            font-size: 0.5rem;
+            line-height: 1rem;
+            color: #999;
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <input type="text" placeholder="请输入关键字">
+        <input class="textInput" type="text" placeholder="请输入拼音后点击搜索...">
+        <input class="button" type="button" value="搜索">
         <ul id="dataList"></ul>
     </div>
 </body>
@@ -38,17 +63,29 @@
 <script type="text/javascript" src="pinyinSearch.js"></script>
 <script>
     const Data=["张三","李四","王五","王六"];
-    let textInput = document.querySelector('.wrapper input');
-    let dataList = document.getElementById('dataList');
-    textInput.addEventListener('change',function () {
-        let text=this.value,list;
+    let textInput = document.querySelector('.textInput');
+    let button = document.querySelector('.button');
+    let dataList = document.querySelector('#dataList');
+    button.addEventListener('click',function () {
+        let listItems=document.querySelectorAll('li');
+        if(listItems.length>0){
+            for (let i=0;i<listItems.length;i++){
+                console.log(listItems[i]);
+                dataList.removeChild(listItems[i]);
+            }
+        }
+        let text=textInput.value,list=null;
         Data.map((value,index)=>{
             if(pinyin().getFullChars(value).indexOf(text.toLowerCase())!=-1||pinyin().getCamelChars(value).indexOf(text.toUpperCase())!=-1){
                 list=document.createElement('li');
                 list.innerText=value;
                 dataList.appendChild(list);
             }
-
         });
+        if(!list){
+            list=document.createElement('li');
+            list.innerText="暂无相关记录";
+            dataList.appendChild(list);
+        }
     })
 </script>
