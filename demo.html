@@ -60,7 +60,7 @@
     </div>
 </body>
 </html>
-<script type="text/javascript" src="pinyinSearch.js"></script>
+<script type="text/javascript" src="pinyinSearch1.js"></script>
 <script>
     const Data=["张三","李四","王五","王六"];
     let textInput = document.querySelector('.textInput');
@@ -75,13 +75,14 @@
             }
         }
         let text=textInput.value,list=null;
-        Data.map((value,index)=>{
-            if(pinyin().getFullChars(value).indexOf(text.toLowerCase())!=-1||pinyin().getCamelChars(value).indexOf(text.toUpperCase())!=-1){
+        let result = new Pinyin(Data,text);
+        if(result && result.length>0){
+            result.map((value)=>{
                 list=document.createElement('li');
                 list.innerText=value;
                 dataList.appendChild(list);
-            }
-        });
+            })
+        }
         if(!list){
             list=document.createElement('li');
             list.innerText="暂无相关记录";
