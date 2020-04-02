@@ -1,92 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Demo</title>
     <style>
-        body{
+        body {
             background: skyblue;
         }
-        .wrapper{
-            width: 15rem;
+
+        .wrapper {
+            width: 20rem;
             height: 10rem;
             margin: 5rem auto;
         }
-        .wrapper input[type='text']{
-            width:10rem;
-            font-size: 0.5rem;
-            border:none;
-            outline: none;
-            height: 1rem;
-            line-height: 1rem;
-            padding: 0 0 0 0.5rem;
-        }
-        .wrapper input[type='text']:focus{
-            box-shadow: inset 0.1rem 0.1rem 0.3rem 0.1rem #888;
-        }
-        .wrapper input[type='button']{
-            color:#fff;
-            font-size: 0.5rem;
+
+        #input {
+            width: 100%;
+            font-size: 1rem;
             border: none;
             outline: none;
-            background: #aaa;
-            height: 1rem;
-            line-height: 1rem;
+            height: 2rem;
+            line-height: 2rem;
             padding: 0 0.5rem;
-            cursor: pointer;
         }
-        .wrapper input[type='button']:hover{
-            box-shadow: 0.1rem 0.3rem 0.3rem 0.1rem #888;
-        }
-        ul{
+
+        #list {
             list-style: none;
-            padding: 0 0 0 0.5rem;
-            margin: 0;
+            padding: 0 0.5rem;
+            margin: 0.2rem 0 0 0;
             background: #fff;
-            width: 10rem;
-            font-size: 0.5rem;
-            line-height: 1rem;
+            width: 100%;
+            font-size: 1rem;
+            line-height: 2rem;
             color: #999;
+        }
+        #list li {
+            border-bottom: 1px solid #ddd;
         }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
-        <input class="textInput" type="text" placeholder="请输入拼音后点击搜索...">
-        <input class="button" type="button" value="搜索">
-        <ul id="dataList"></ul>
+        <input id="input" type="text" placeholder="请输入拼音...">
+        <ul id="list"></ul>
     </div>
 </body>
+
 </html>
-<script type="text/javascript" src="pinyinSearch1.js"></script>
+<script type="text/javascript" src="./index.js"></script>
 <script>
-    const Data=["张三","李四","王五","王六"];
-    let textInput = document.querySelector('.textInput');
-    let button = document.querySelector('.button');
-    let dataList = document.querySelector('#dataList');
-    button.addEventListener('click',function () {
-        let listItems=document.querySelectorAll('li');
-        if(listItems.length>0){
-            for (let i=0;i<listItems.length;i++){
-                console.log(listItems[i]);
-                dataList.removeChild(listItems[i]);
-            }
+    const data = [
+        '张三',
+        '李四',
+        '王五',
+        '王六',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
+        '星期日',
+    ];
+    const input = document.querySelector('#input');
+    const list = document.querySelector('#list');
+
+    function appendToList(data) {
+        list.innerHTML = ''
+        data.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = item;
+            list.appendChild(li);
+        })
+    }
+
+    appendToList(data)
+    input.addEventListener('input', function() {
+        if (!input.value) {
+            appendToList(data);
+            return;
         }
-        let text=textInput.value,list=null;
-        let result = new Pinyin(Data,text);
-        if(result && result.length>0){
-            result.map((value)=>{
-                list=document.createElement('li');
-                list.innerText=value;
-                dataList.appendChild(list);
-            })
-        }
-        if(!list){
-            list=document.createElement('li');
-            list.innerText="暂无相关记录";
-            dataList.appendChild(list);
+        const result = pinyin_search(data, input.value);
+        if (result && result.length > 0) {
+            appendToList(result);
+        } else {
+            appendToList(['暂无数据']);
         }
     })
 </script>

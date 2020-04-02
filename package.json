@@ -1,0 +1,23 @@
+{
+  "name": "pinyin_search",
+  "version": "1.0.0",
+  "description": "支持拼音的模糊搜索",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaominguo/Pinyin_Search.git"
+  },
+  "keywords": [
+    "pinyin",
+    "search"
+  ],
+  "author": "Max Kwok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yaominguo/Pinyin_Search/issues"
+  },
+  "homepage": "https://github.com/yaominguo/Pinyin_Search#readme"
+}
