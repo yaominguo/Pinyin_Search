@@ -4,6 +4,8 @@
 
 > 使用方法
 
+[查看Demo](https://yaominguo.github.io/Pinyin_Search/demo.html)
+
 在html中使用：
 
 ```html
@@ -12,6 +14,8 @@
   pinyin_search(dataSource, searchValue, isPolyphony)
 </script>
 ```
+
+
 
 > 方法参数
 
